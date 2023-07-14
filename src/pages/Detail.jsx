@@ -1,18 +1,24 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 const Detail = () => {
+  const params = useParams();
+  const id = params.id;
+
+  // 데이터를 다른 페이지(예를 들면 detail상세페이지)에서도 동일하게 가져올 수 있다.
+  const { data } = useSelector((state) => state.diary);
+
+  // param으로 넘어오는 id값이 문자형이라 ===로 비교하면 오류가 남
+  const diary = data.find((item) => item.id == id);
+
   return (
     <StyledMain>
-      <StyledTitle>Diary Title</StyledTitle>
-      <StyledDate>July 7, 2023</StyledDate>
-      <StyledMood>Mood: 4</StyledMood>
-      <StyledContent>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-        fermentum felis vel sem eleifend, et viverra ex scelerisque. Donec ut
-        tortor eget nulla bibendum cursus. Nam tincidunt arcu et risus congue,
-        vitae bibendum mi finibus.
-      </StyledContent>
+      <StyledTitle>{diary.title}</StyledTitle>
+      <StyledDate>{diary.createdAt}</StyledDate>
+      <StyledMood>Mood: {diary.modeCode}</StyledMood>
+      <StyledContent>{diary.body}</StyledContent>
     </StyledMain>
   );
 };
